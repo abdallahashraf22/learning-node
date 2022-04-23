@@ -4,8 +4,9 @@ const path = require("path");
 // express
 const express = require("express");
 // routers
-const adminData = require("./routes/admin");
-const shop = require("./routes/shop");
+const adminRoutes = require("./routes/admin");
+const shopRoutes = require("./routes/shop");
+const notFound = require("./controllers/notFoundController");
 ////////////////////////////////
 ////////////////////////////////
 ////////////////////////////////
@@ -16,12 +17,8 @@ app.set("views", "views");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
-app.use("/admin", adminData.routes);
-app.use(shop);
-app.use((req, res, next) => {
-  res
-    .status(404)
-    .render("404", { pageTitle: "Ops...not found", path: "eqwef" });
-});
+app.use("/admin", adminRoutes);
+app.use(shopRoutes);
+app.use(notFound.returnNotFound);
 
 app.listen(1200);
